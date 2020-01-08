@@ -1,0 +1,24 @@
+{
+  "name": "canvas-matrix",
+  "version": "1.0.0",
+  "description": "matrix for canvas, mat3, mat4",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isuekey/canvas-matrix.git"
+  },
+  "keywords": [
+    "matrix",
+    "canvas",
+    "js"
+  ],
+  "author": "liuhanru",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/isuekey/canvas-matrix/issues"
+  },
+  "homepage": "https://github.com/isuekey/canvas-matrix#readme"
+}
