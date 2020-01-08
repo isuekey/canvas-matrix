@@ -1,5 +1,5 @@
 
-export class Mat3 {
+class Mat3 {
   constructor(mat = [
     0, 0, 0, 
     0, 0, 0, 
@@ -78,7 +78,7 @@ export class Mat3 {
   }
 }
 
-export class Mat4 {
+class Mat4 {
   constructor(mat = [
     0, 0, 0, 0,
     0, 0, 0, 0,
@@ -164,3 +164,8 @@ export class Mat4 {
     ]);    
   }
 }
+
+module.exports.Mat4 = Mat4;
+module.exports.Mat3 = Mat3;
+
+
