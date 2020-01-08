@@ -5,11 +5,7 @@ class Mat3 {
     0, 0, 0, 
     0, 0, 0,
   ]) {
-    this.usage = 0;
     this.mat = mat;
-  }
-  setUsage() {
-    this.usage = 1;
   }
   setI() {
     this.mat = [
@@ -17,7 +13,6 @@ class Mat3 {
       0, 1, 0,
       0, 0, 1,
     ];
-    this.setUsage();
     return this;
   }
   setRotate(angle) {
@@ -28,7 +23,6 @@ class Mat3 {
       sin, cos, 0,
       0, 0, 1,
     ];
-    this.setUsage();
     return this;
   }
   setScale(xScale, yScale) {
@@ -37,7 +31,6 @@ class Mat3 {
       0, yScale, 0,
       0, 0, 1,
     ];
-    this.setUsage();
     return this;
   }
   setTranslate(x, y) {
@@ -46,13 +39,12 @@ class Mat3 {
       0, 1, y,
       0, 0, 1,
     ];
-    this.setUsage();
     return this;
   }
   multiply(mat3) {
     return mat3.multiplyBy(this);
   }
-  multiplyBy(mat3) {
+  handleMultiplyBy(mat3) {
     const a = this.mat;
     const b = mat3.mat;
     const a11 = a[0] * b[0] + a[1] * b[3] + a[2] * b[6];
@@ -64,19 +56,61 @@ class Mat3 {
     const a31 = a[6] * b[0] + a[7] * b[3] + a[8] * b[6];
     const a32 = a[6] * b[1] + a[7] * b[4] + a[8] * b[7];
     const a33 = a[6] * b[2] + a[7] * b[5] + a[8] * b[8];
-    this.usage += 27;
-    return new Mat3([
+    return [
       a11, a12, a13,
       a21, a22, a23,
       a31, a32, a33,
-    ]);
+    ];
+  }
+  multiplyBy(mat3) {
+    return new Mat3(this.handleMultiplyBy(mat3));
   }
   getCanvasTransform() {
     const mat = this.mat;
-    this.usage += 1;
     return [mat[0], mat[3], mat[1], mat[4], mat[2], mat[5]];
   }
 }
+Mat3.prototype[Symbol.toStringTag]='Matrix3';
+
+class Mat3Dev extends Mat3 {
+  constructor(mat = [
+    0, 0, 0, 
+    0, 0, 0, 
+    0, 0, 0,
+  ]) {
+    super(mat);
+    this.usage = 0;
+  }
+  setUsage(usage=1) {
+    this.usage = usage;
+  }
+  setI() {
+    this.setUsage();
+    super.setI();
+    return this;
+  }
+  setRotate(angle) {
+    super.setRotate(angle);
+    this.setUsage(5);
+    return this;
+  }
+  setScale(xs, ys) {
+    super.setScale(xs, ys);
+    this.setUsage();
+    return this;
+  }
+  setTranslate(x, y) {
+    super.setTranslate(x, y);
+    this.setUsage();
+    return this;
+  }
+  multiplyBy(mat3) {
+    const newMat3 = super.handleMultiplyBy(mat3);
+    this.usage += 27;
+    return new Mat3Dev(newMat3);
+  }
+}
+Mat3Dev.prototype[Symbol.toStringTag]='Matrix3Dev';
 
 class Mat4 {
   constructor(mat = [
@@ -164,8 +198,13 @@ class Mat4 {
     ]);    
   }
 }
+Mat4.prototype[Symbol.toStringTag]='Matrix4';
+class Mat4Dev extends Mat4 {
+}
+Mat4Dev.prototype[Symbol.toStringTag]='Matrix4Dev';
 
 module.exports.Mat4 = Mat4;
 module.exports.Mat3 = Mat3;
-
+module.exports.Mat4Dev = Mat4;
+module.exports.Mat3Dev = Mat3Dev;
 
