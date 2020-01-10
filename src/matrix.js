@@ -133,11 +133,7 @@ class Mat4 {
     0, 0, 0, 0,
   ]){
     this.mat = mat;
-    this.usage = 0;
   }
-  setUsage() {
-    this.usage = 1;
-  };
   setI() {
     this.mat = [
       1, 0, 0, 0,
@@ -145,7 +141,6 @@ class Mat4 {
       0, 0, 1, 0,
       0, 0, 0, 1,
     ];
-    this.setUsage();
     return this;
   }
   setRotate(angle, axis=[0, 0, 1]) {
@@ -157,7 +152,6 @@ class Mat4 {
       0, 0, 1, 0,
       0, 0, 0, 1,
     ];
-    this.setUsage();
     return this;
   }
   setScale(xs, ys, zs) {
@@ -177,42 +171,85 @@ class Mat4 {
       0, 0, 1, z,
       0, 0, 0, 1,
     ];
-    this.setUsage();
     return this;
   }
   multiply(mat4) {
     return mat4.multiplyBy(this);
   }
+  handleMultiplyBy(mat4) {
+    const a = this.mat;
+    const b = mat4.mat;
+    return [
+      a[0] * b[0] + a[1] * b[4] + a[2] * b[8] + a[3] * b[12],
+      a[0] * b[1] + a[1] * b[5] + a[2] * b[9] + a[3] * b[13],
+      a[0] * b[2] + a[1] * b[6] + a[2] * b[10] + a[3] * b[14],
+      a[0] * b[3] + a[1] * b[7] + a[2] * b[11] + a[3] * b[15],
+      a[4] * b[0] + a[5] * b[4] + a[6] * b[8] + a[7] * b[12],
+      a[4] * b[1] + a[5] * b[5] + a[6] * b[9] + a[7] * b[13],
+      a[4] * b[2] + a[5] * b[6] + a[6] * b[10] + a[7] * b[14],
+      a[4] * b[3] + a[5] * b[7] + a[6] * b[11] + a[7] * b[15],
+      a[8] * b[0] + a[9] * b[4] + a[10] * b[8] + a[11] * b[12],
+      a[8] * b[1] + a[9] * b[5] + a[10] * b[9] + a[11] * b[13],
+      a[8] * b[2] + a[9] * b[6] + a[10] * b[10] + a[11] * b[14],
+      a[8] * b[3] + a[9] * b[7] + a[10] * b[11] + a[11] * b[15],
+      a[12] * b[0] + a[13] * b[4] + a[14] * b[8] + a[15] * b[12],
+      a[12] * b[1] + a[13] * b[5] + a[14] * b[9] + a[15] * b[13],
+      a[12] * b[2] + a[13] * b[6] + a[14] * b[10] + a[15] * b[14],
+      a[12] * b[3] + a[13] * b[7] + a[14] * b[11] + a[15] * b[15],
+    ];
+  }
   multiplyBy(mat4) {
     const a = this.mat;
     const b = mat4.mat;
-    const a11 = a[0] * b[0] + a[1] * b[4] + a[2] * b[8] + a[3] * b[12];
-    const a12 = a[0] * b[1] + a[1] * b[5] + a[2] * b[9] + a[3] * b[13];
-    const a13 = a[0] * b[2] + a[1] * b[6] + a[2] * b[10] + a[3] * b[14];
-    const a14 = a[0] * b[3] + a[1] * b[7] + a[2] * b[11] + a[3] * b[15];
-    const a21 = a[4] * b[0] + a[5] * b[4] + a[6] * b[8] + a[7] * b[12];
-    const a22 = a[4] * b[1] + a[5] * b[5] + a[6] * b[9] + a[7] * b[13];
-    const a23 = a[4] * b[2] + a[5] * b[6] + a[6] * b[10] + a[7] * b[14];
-    const a24 = a[4] * b[2] + a[5] * b[7] + a[6] * b[11] + a[7] * b[15];
-    const a31 = a[8] * b[0] + a[9] * b[4] + a[10] * b[8] + a[11] * b[12];
-    const a32 = a[8] * b[1] + a[9] * b[5] + a[10] * b[9] + a[11] * b[13];
-    const a33 = a[8] * b[2] + a[9] * b[6] + a[10] * b[10] + a[11] * b[14];
-    const a34 = a[8] * b[3] + a[9] * b[7] + a[10] * b[11] + a[11] * b[15];
-    const a41 = a[12] * b[0] + a[13] * b[4] + a[14] * b[8] + a[15] * b[12];
-    const a42 = a[12] * b[1] + a[13] * b[5] + a[14] * b[9] + a[15] * b[13];
-    const a43 = a[12] * b[2] + a[13] * b[6] + a[14] * b[10] + a[15] * b[14];
-    const a44 = a[12] * b[3] + a[13] * b[7] + a[14] * b[11] + a[15] * b[15];
-    this.usage += 64;
-    return new Mat3([
-      a11, a12, a13, a14,
-      a21, a22, a23, a24,
-      a31, a32, a33, a34,
-      a41, a42, a43, a44,
-    ]);    
+    return new Mat4(this.handleMultiplyBy(mat4));
+  }
+  getElement(row, col) {
+    return this.mat[row * 4 + col];
   }
 }
 Mat4.prototype[Symbol.toStringTag]='Matrix4';
 class Mat4Dev extends Mat4 {
+  constructor(mat = [
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0,
+  ]) {
+    super(mat);
+    this.usage = 0;
+  }
+  setUsage(usage=1) {
+    this.usage = usage;
+  }
+  setI() {
+    this.setUsage();
+    super.setI();
+    return this;
+  }
+  setRotate(angle) {
+    super.setRotate(angle);
+    this.setUsage(16);
+    return this;
+  }
+  setScale(xs, ys) {
+    super.setScale(xs, ys);
+    this.setUsage();
+    return this;
+  }
+  setTranslate(x, y) {
+    super.setTranslate(x, y);
+    this.setUsage();
+    return this;
+  }
+  multiply(mat4) {
+    this.usage += 64;
+    return mat4.multiplyBy(this);
+  }
+  multiplyBy(mat4) {
+    const newMat4 = super.handleMultiplyBy(mat4);
+    this.usage += 64;
+    return new Mat4Dev(newMat4);
+  }
 }
 Mat4Dev.prototype[Symbol.toStringTag]='Matrix4Dev';
 

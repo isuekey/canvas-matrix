@@ -237,19 +237,57 @@ describe('Mat4', () => {
       const s0 = new Array(16).fill(0).map((e) => (Math.random() * 100));
       const s1 = new Array(16).fill(0).map((e) => (Math.random() * 100));
       const A = new Mat4(s0);
-      const B = new Mat3(s1);
+      const B = new Mat4(s1);
       const ab = A.multiplyBy(B);
-      const step= 4;
+      const step = 4;
       ab.mat.forEach((ele,idx) => {
         const row = Math.floor(idx / step);
         const col = idx % step;
-        it(`ab[${row +1}, ${col+1}] = sum(A[row, i] * B[i, col], i in 0-${step})`, () => {
+        it(`ab[${row +1}, ${col+1}] = sum(A[${row}, i] * B[i, ${col}], i in 0-${step})`, () => {
           let sum = 0;
           for (let idx = 0; idx < step; ++idx) {
             sum += A.getElement(row, idx) * B.getElement(idx, col);
           }
           expect(ele).to.equal(sum);
         });
+      });
+    });
+    describe('check A*B perform', () => {
+      it('perform is', () => {
+        let s0 = new Array(16).fill(0).map((e) => (Math.random() * 100));
+        let s1 = new Array(16).fill(0).map((e) => (Math.random() * 100));
+        let A = new Mat4(s0);
+        let B = new Mat4(s1);
+        const mm = 'multiplyBy';
+        console.time(mm);
+        let ab = A.multiplyBy(B);
+        console.timeEnd(mm);
+
+        s0 = new Array(16).fill(0).map((e) => (Math.random() * 100));
+        s1 = new Array(16).fill(0).map((e) => (Math.random() * 100));
+        const step = 4;
+        const smm = 'multipyBySum';
+        console.time(smm);
+        const sab = s0.map((ele, idx) => {
+          const row = Math.floor(idx / step);
+          const col = idx % step;
+          let sum = 0;
+          for (let idx = 0; idx < step; ++idx) {
+            sum += s0[row * step + idx] * s1[idx * step + col];
+          }
+          return sum;
+        });
+        const abs = new Mat4(sab);
+        console.timeEnd(smm);
+
+        s0 = new Array(16).fill(0).map((e) => (Math.random() * 100));
+        s1 = new Array(16).fill(0).map((e) => (Math.random() * 100));
+        A = new Mat4(s0);
+        B = new Mat4(s1);
+
+        console.time(mm);
+        ab = A.multiplyBy(B);
+        console.timeEnd(mm);
       });
     });
   });  
