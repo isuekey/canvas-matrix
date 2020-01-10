@@ -15,7 +15,7 @@ class Mat3 {
     ];
     return this;
   }
-  setRotate(angle) {
+  setRotate(angle = 0) {
     const cos = Math.cos(angle * Math.PI / 180);
     const sin = Math.sin(angle * Math.PI / 180);
     this.mat = [
@@ -25,7 +25,7 @@ class Mat3 {
     ];
     return this;
   }
-  setScale(xScale, yScale) {
+  setScale(xScale=1, yScale=1) {
     this.mat = [
       xScale, 0, 0,
       0, yScale, 0,
@@ -33,7 +33,7 @@ class Mat3 {
     ];
     return this;
   }
-  setTranslate(x, y) {
+  setTranslate(x=0, y=0) {
     this.mat = [
       1, 0, x,
       0, 1, y,
@@ -42,6 +42,9 @@ class Mat3 {
     return this;
   }
   multiply(mat3) {
+    if (typeof mat3 == 'number') {
+      return new Mat3(this.mat.map(ele => ele * mat3));
+    }
     return mat3.multiplyBy(this);
   }
   handleMultiplyBy(mat3) {
@@ -63,11 +66,17 @@ class Mat3 {
     ];
   }
   multiplyBy(mat3) {
+    if (typeof mat3 == 'number') {
+      return new Mat3(this.mat.map(ele => ele * mat3));
+    }
     return new Mat3(this.handleMultiplyBy(mat3));
   }
   getCanvasTransform() {
     const mat = this.mat;
     return [mat[0], mat[3], mat[1], mat[4], mat[2], mat[5]];
+  }
+  getElement(row, col) {
+    return this.mat[row * 3 + col];
   }
 }
 Mat3.prototype[Symbol.toStringTag]='Matrix3';
@@ -103,6 +112,10 @@ class Mat3Dev extends Mat3 {
     super.setTranslate(x, y);
     this.setUsage();
     return this;
+  }
+  multiply(mat3) {
+    this.usage += 27;
+    return mat3.multiplyBy(this);
   }
   multiplyBy(mat3) {
     const newMat3 = super.handleMultiplyBy(mat3);
