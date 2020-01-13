@@ -2,12 +2,10 @@
   * usage
   * files
   * classes
-  * 
 
 ## Usage ##
   * install
   * import
-  * 
 
 ### install ###
   * npm install canvas-matrix
