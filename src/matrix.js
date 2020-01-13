@@ -15,7 +15,7 @@ class Mat3 {
     ];
     return this;
   }
-  setRotate(angle = 0) {
+  setRotate(angle= 0) {
     const cos = Math.cos(angle * Math.PI / 180);
     const sin = Math.sin(angle * Math.PI / 180);
     this.mat = [
@@ -143,25 +143,26 @@ class Mat4 {
     ];
     return this;
   }
-  setRotate(angle, axis=[0, 0, 1]) {
+  setRotate(angle=0, axis=[0, 0, 1]) {
     const cos = Math.cos(angle * Math.PI / 180);
     const sin = Math.sin(angle * Math.PI / 180);
+    const [x , y, z] = axis;
+    const cos1 = 1-cos, sin1 = 1-sin;
     this.mat = [
-      cos, -sin, 0, 0,
-      sin, cos, 0, 0,
-      0, 0, 1, 0,
+      cos + cos1*x*x, cos1*x*y - sin*z, cos1*x*z + sin*y, 0,
+      cos1*y*x + sin*z, cos + cos1*y*y, cos1*y*z - sin*x, 0,
+      cos1*z*x - sin*y, cos1*z*y + sin*x, cos+cos1*z*z, 0,
       0, 0, 0, 1,
     ];
     return this;
   }
-  setScale(xs, ys, zs) {
+  setScale(xs=1, ys=1, zs=1) {
     this.mat = [
       xs, 0, 0, 0,
       0, ys, 0, 0,
       0, 0, zs, 0,
       0, 0, 0, 1,
     ];
-    this.setUsage();
     return this;
   }
   setTranslate(x, y, z) {
@@ -174,6 +175,9 @@ class Mat4 {
     return this;
   }
   multiply(mat4) {
+    if(typeof mat4 == 'number') {
+      return new Mat4(this.mat.map(ele => ele * mat4));
+    }
     return mat4.multiplyBy(this);
   }
   handleMultiplyBy(mat4) {
@@ -199,6 +203,9 @@ class Mat4 {
     ];
   }
   multiplyBy(mat4) {
+    if(typeof mat4 == 'number') {
+      return new Mat4(this.mat.map(ele => ele * mat4));
+    };
     const a = this.mat;
     const b = mat4.mat;
     return new Mat4(this.handleMultiplyBy(mat4));

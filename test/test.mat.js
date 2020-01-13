@@ -149,72 +149,72 @@ describe('Mat3Dev', () => {
 
 describe('Mat4', () => {
   before(() => {
-    const mat3 = new Mat3();
+    const mat4 = new Mat4();
     it('is a Matrix3 instance', () => {
-      expect(mat3).to.be.a('Matrix3');
+      expect(mat4).to.be.a('Matrix3');
     });
     it('the mat will be [0, 0, 0, 0, 0, 0, 0, 0, 0]', () => {
-      expect(mat3.mat).to.deep.equal([0, 0, 0, 0, 0, 0, 0, 0, 0]);
+      expect(mat4.mat).to.deep.equal([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
     });
   });
   describe('setI()', () => {
-    const mat3 = new Mat3().setI();
+    const mat4 = new Mat4().setI();
     it('the mat will be [1, 0, 0, 0, 1, 0, 0, 0, 1]', () => {
-      expect(mat3.mat).to.deep.equal([1, 0, 0, 0, 1, 0, 0, 0, 1]);
+      expect(mat4.mat).to.deep.equal([1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
     });
   });
   describe('setRotate()', () => {
-    it('the mat will rotate 30 degree', () => {
-      const mat3 = new Mat3().setRotate(30);
+    it('the mat will rotate 30 degree with [0, 0, 1], ', () => {
+      const mat4 = new Mat4().setRotate(30);
       const cos = Math.cos(30 * Math.PI / 180);
       const sin = Math.sin(30 * Math.PI / 180);
-      expect(mat3.mat).to.deep.equal([cos, -sin, 0, sin, cos, 0, 0, 0, 1]);
+      expect(mat4.mat).to.deep.equal([cos, -sin, 0, 0, sin, cos, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]);
     });
-    it('the mat will rotate 45 degree', () => {
-      const mat3 = new Mat3().setRotate(45);
+    it('the mat will rotate 45 degree with [1, 1, 1]', () => {
+      const mat4 = new Mat4().setRotate(45, [1, 1, 1]);
       const cos = Math.cos(45 * Math.PI / 180);
       const sin = Math.sin(45 * Math.PI / 180);
-      expect(mat3.mat).to.deep.equal([cos, -sin, 0, sin, cos, 0, 0, 0, 1]);
+      expect(mat4.mat).to.deep.equal([1, 1-cos-sin, 1-cos+sin, 0, 1-cos+sin, 1, 1-cos-sin, 0, 1-cos-sin, 1-cos+sin, 1, 0, 0, 0, 0, 1]);
     });
   });
   describe('setScale()', () => {
     it('the mat will scale xscale,yscale', () => {
-      const xscale = 3, yscale = 4.5;
-      const mat3 = new Mat3().setScale(xscale, yscale);
-      expect(mat3.mat).to.deep.equal([xscale,0, 0, 0, yscale, 0, 0, 0, 1]);
+      const xscale = 3, yscale = 4.5, zscale= 5.5;
+      const mat4 = new Mat4().setScale(xscale, yscale, zscale);
+      expect(mat4.mat).to.deep.equal([xscale,0, 0, 0, 0, yscale, 0, 0, 0, 0, zscale,0, 0, 0, 0, 1]);
     });
   });
   describe('setTranslate()', () => {
     it('the mat will move xm, ym', () => {
-      const xm = 2, ym = 3.5;
-      const mat3 = new Mat3().setTranslate(xm, ym);
-      expect(mat3.mat).to.deep.equal([1 ,0, xm, 0, 1, ym, 0, 0, 1]);
+      const xm = 2, ym = 3.5, zm=8.8;
+      const mat4 = new Mat4().setTranslate(xm, ym, zm);
+      expect(mat4.mat).to.deep.equal([1 ,0, 0, xm, 0, 1, 0, ym, 0, 0, 1, zm, 0, 0, 0, 1]);
     });
   });
   describe('handleMultiplyBy()', () => {
     it('the mat will check I * A = A', () => {
-      const i = new Mat3().setI();
-      const a = new Mat3().setScale(4, 11);
+      const i = new Mat4().setI();
+      const a = new Mat4().setScale(4, 11);
       const r = a.multiply(i);
       expect(r.mat).to.deep.equal(a.mat);
     });
     it('the mat will check A * I = A', () => {
-      const i = new Mat3().setI();
-      const a = new Mat3().setScale(4, 11);
+      const i = new Mat4().setI();
+      const a = new Mat4().setScale(4, 11);
       const r = a.multiplyBy(i);
       expect(r.mat).to.deep.equal(a.mat);
     });
     it('the mat will check A * 0 = 0', () => {
-      const i = new Mat3([ 1, 2, 3, 4, 5, 6, 7, 8, 9]);
+      const i = new Mat4([ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]);
       const a = 0;
       const r = i.multiplyBy(a);
-      expect(r.mat).to.deep.equal(new Array(9).fill(0));
+      expect(r.mat).to.deep.equal(new Array(16).fill(0));
     });
     it('the mat will check A * 5 = 5 * A = 5A', () => {
       const s0 = new Array(9).fill(0).map((e, i) => i + 1);
       const a = 5;
       const s = s0.map(ele => ele * a);
-      const i = new Mat3(s0);
+      const i = new Mat4(s0);
       const r = i.multiplyBy(a);
       expect(r.mat).to.deep.equal(s);
       const r2 = i.multiply(a);
@@ -222,16 +222,13 @@ describe('Mat4', () => {
       expect(r2.mat).to.deep.equal(r.mat);
     });
     it('check A * B != B * A', () => {
-      const s0 = new Array(9).fill(0).map((e, i) => i + 1);
+      const s0 = new Array(16).fill(0).map((e, i) => i + 1);
       const s1 = [...s0].reverse();
-      const A = new Mat3(s0);
-      const B = new Mat3(s1);
+      const A = new Mat4(s0);
+      const B = new Mat4(s1);
       const ab = A.multiplyBy(B);
       const ba = A.multiply(B);
       expect(ab.mat).to.deep.not.equal(ba.mat);
-      expect(ab.mat).to.deep.equal([30, 24, 18, 84, 69, 54, 138, 114, 90]);
-      expect(ba.mat).to.deep.equal([90, 114, 138, 54, 69, 84, 18, 24, 30]);
-      //这种对称性，仅仅是因为数据特殊造成的，没有啥普遍意义
     });
     describe('check A * B', () => {
       const s0 = new Array(16).fill(0).map((e) => (Math.random() * 100));
