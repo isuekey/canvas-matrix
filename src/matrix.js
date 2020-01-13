@@ -146,7 +146,9 @@ class Mat4 {
   setRotate(angle=0, axis=[0, 0, 1]) {
     const cos = Math.cos(angle * Math.PI / 180);
     const sin = Math.sin(angle * Math.PI / 180);
-    const [x , y, z] = axis;
+    const [xr , yr, zr] = axis;
+    const m = Math.sqrt(xr*xr + yr*yr + zr*zr);
+    const [x, y, z] = [xr/m, yr/m, zr/m];
     const cos1 = 1-cos, sin1 = 1-sin;
     this.mat = [
       cos + cos1*x*x, cos1*x*y - sin*z, cos1*x*z + sin*y, 0,
