@@ -233,17 +233,17 @@ class Mat4Dev extends Mat4 {
     super.setI();
     return this;
   }
-  setRotate(angle) {
-    super.setRotate(angle);
+  setRotate(angle=0, axis=[0,0,1]) {
+    super.setRotate(angle, axis);
     this.setUsage(16);
     return this;
   }
-  setScale(xs, ys) {
-    super.setScale(xs, ys);
+  setScale(xs=1, ys=1, zs=1){
+    super.setScale(xs, ys, zs);
     this.setUsage();
     return this;
   }
-  setTranslate(x, y) {
+  setTranslate(x=0, y=0,z=0) {
     super.setTranslate(x, y);
     this.setUsage();
     return this;
