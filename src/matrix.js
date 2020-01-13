@@ -263,8 +263,6 @@ class Mat4Dev extends Mat4 {
 }
 Mat4Dev.prototype[Symbol.toStringTag]='Matrix4Dev';
 
-module.exports.Mat4 = Mat4;
-module.exports.Mat3 = Mat3;
-module.exports.Mat4Dev = Mat4;
-module.exports.Mat3Dev = Mat3Dev;
-
+export {
+  Mat4, Mat3, Mat4Dev, Mat3Dev
+}

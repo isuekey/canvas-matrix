@@ -1,6 +1,6 @@
 {
   "name": "canvas-matrix",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "matrix for canvas, mat3, mat4",
   "main": "dist/main.js",
   "scripts": {

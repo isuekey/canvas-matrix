@@ -1,5 +1,5 @@
-const { Mat3, Mat3Dev, Mat4, Mat4Dev } = require('../index.js');
-const chai = require('chai');
+import { Mat3, Mat3Dev, Mat4, Mat4Dev } from '../index.js';
+import * as chai from 'chai';
 const { assert, expect, should } = chai;
 
 describe('Mat3', () => {
