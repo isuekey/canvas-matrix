@@ -148,10 +148,8 @@ class Mat4 {
     const sin = Math.sin(angle * Math.PI / 180);
     const [xr , yr, zr] = axis;
     const m = Math.sqrt(xr*xr + yr*yr + zr*zr);
-    let [x, y, z] = [1, 1, 1];
-    if (m != 0) {
-      [x, y, z] = [xr/m, yr/m, zr/m];      
-    }
+    // 这里防御去掉了，自行处理
+    const [x, y, z] = [xr/m, yr/m, zr/m];
     const cos1 = 1-cos, sin1 = 1-sin;
     this.mat = [
       cos + cos1*x*x, cos1*x*y - sin*z, cos1*x*z + sin*y, 0,
