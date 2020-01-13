@@ -268,7 +268,7 @@ describe('Mat4', () => {
         const step = 4;
         const smm = 'multipyBySum';
         console.time(smm);
-        const sab = s0.map((ele, idx) => {
+        let sab = s0.map((ele, idx) => {
           const row = Math.floor(idx / step);
           const col = idx % step;
           let sum = 0;
@@ -277,7 +277,7 @@ describe('Mat4', () => {
           }
           return sum;
         });
-        const abs = new Mat4(sab);
+        let abs = new Mat4(sab);
         console.timeEnd(smm);
 
         s0 = new Array(16).fill(0).map((e) => (Math.random() * 100));
@@ -288,6 +288,21 @@ describe('Mat4', () => {
         console.time(mm);
         ab = A.multiplyBy(B);
         console.timeEnd(mm);
+
+        s0 = new Array(16).fill(0).map((e) => (Math.random() * 100));
+        s1 = new Array(16).fill(0).map((e) => (Math.random() * 100));
+        console.time(smm);
+        sab = s0.map((ele, idx) => {
+          const row = Math.floor(idx / step);
+          const col = idx % step;
+          let sum = 0;
+          for (let idx = 0; idx < step; ++idx) {
+            sum += s0[row * step + idx] * s1[idx * step + col];
+          }
+          return sum;
+        });
+        abs = new Mat4(sab);
+        console.timeEnd(smm);
       });
     });
   });  
