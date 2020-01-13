@@ -1,3 +1,4 @@
+"use strict";
 
 class Mat3 {
   constructor(mat = [
