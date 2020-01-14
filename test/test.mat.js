@@ -1,5 +1,5 @@
-import { Mat3, Mat3Dev, Mat4, Mat4Dev } from '../index.js';
-import * as chai from 'chai';
+const { Mat3, Mat3Dev, Mat4, Mat4Dev } = require('../index.js');
+const chai = require('chai');
 const { assert, expect, should } = chai;
 
 describe('Mat3', () => {
@@ -174,7 +174,10 @@ describe('Mat4', () => {
       const mat4 = new Mat4().setRotate(45, [1, 1, 1]);
       const cos = Math.cos(45 * Math.PI / 180);
       const sin = Math.sin(45 * Math.PI / 180);
-      expect(mat4.mat).to.deep.equal([1, 1-cos-sin, 1-cos+sin, 0, 1-cos+sin, 1, 1-cos-sin, 0, 1-cos-sin, 1-cos+sin, 1, 0, 0, 0, 0, 1]);
+      const cos1 = 1-cos;
+      const sin1 = 1-sin;
+      const r = Math.sqrt(3)/3;
+      expect(mat4.mat).to.deep.equal([cos + cos1*r*r, cos1*r*r-sin*r, cos1*r*r+sin*r, 0, cos1*r*r+sin*r, cos+cos1*r*r, cos1*r*r-sin*r, 0, cos1*r*r-sin*r, cos1*r*r+sin*r, cos + cos1*r*r, 0, 0, 0, 0, 1]);
     });
   });
   describe('setScale()', () => {

@@ -26,6 +26,9 @@ class Mat3 {
     ];
     return this;
   }
+  thenRotate(angle=0) {
+    return new Mat3().setRotate(angle).multiplyBy(this);
+  }
   setScale(xScale=1, yScale=1) {
     this.mat = [
       xScale, 0, 0,
@@ -34,6 +37,9 @@ class Mat3 {
     ];
     return this;
   }
+  thenScale(xScale=1, yScale=1) {
+    return new Mat3().setScale(xScale, yScale).multiplyBy(this);
+  }
   setTranslate(x=0, y=0) {
     this.mat = [
       1, 0, x,
@@ -41,6 +47,9 @@ class Mat3 {
       0, 0, 1,
     ];
     return this;
+  }
+  thenTranslate(x=0, y=0) {
+    return new Mat3().setTranslate(x, y).multiplyBy(this);
   }
   multiply(mat3) {
     if (typeof mat3 == 'number') {
@@ -51,19 +60,16 @@ class Mat3 {
   handleMultiplyBy(mat3) {
     const a = this.mat;
     const b = mat3.mat;
-    const a11 = a[0] * b[0] + a[1] * b[3] + a[2] * b[6];
-    const a12 = a[0] * b[1] + a[1] * b[4] + a[2] * b[7];
-    const a13 = a[0] * b[2] + a[1] * b[5] + a[2] * b[8];
-    const a21 = a[3] * b[0] + a[4] * b[3] + a[5] * b[6];
-    const a22 = a[3] * b[1] + a[4] * b[4] + a[5] * b[7];
-    const a23 = a[3] * b[2] + a[4] * b[5] + a[5] * b[8];
-    const a31 = a[6] * b[0] + a[7] * b[3] + a[8] * b[6];
-    const a32 = a[6] * b[1] + a[7] * b[4] + a[8] * b[7];
-    const a33 = a[6] * b[2] + a[7] * b[5] + a[8] * b[8];
     return [
-      a11, a12, a13,
-      a21, a22, a23,
-      a31, a32, a33,
+      a[0] * b[0] + a[1] * b[3] + a[2] * b[6],
+      a[0] * b[1] + a[1] * b[4] + a[2] * b[7],
+      a[0] * b[2] + a[1] * b[5] + a[2] * b[8],
+      a[3] * b[0] + a[4] * b[3] + a[5] * b[6],
+      a[3] * b[1] + a[4] * b[4] + a[5] * b[7],
+      a[3] * b[2] + a[4] * b[5] + a[5] * b[8],
+      a[6] * b[0] + a[7] * b[3] + a[8] * b[6],
+      a[6] * b[1] + a[7] * b[4] + a[8] * b[7],
+      a[6] * b[2] + a[7] * b[5] + a[8] * b[8]
     ];
   }
   multiplyBy(mat3) {
@@ -148,9 +154,10 @@ class Mat4 {
     const cos = Math.cos(angle * Math.PI / 180);
     const sin = Math.sin(angle * Math.PI / 180);
     const [xr , yr, zr] = axis;
-    const m = Math.sqrt(xr*xr + yr*yr + zr*zr);
+    const range = xr*xr + yr*yr + zr*zr;
+    const m = Math.sqrt(range);
     // 这里防御去掉了，自行处理
-    const [x, y, z] = [xr/m, yr/m, zr/m];
+    const [x, y, z] = [xr*m/range, yr*m/range, zr*m/range];
     const cos1 = 1-cos, sin1 = 1-sin;
     this.mat = [
       cos + cos1*x*x, cos1*x*y - sin*z, cos1*x*z + sin*y, 0,
