@@ -2,13 +2,13 @@
   "name": "canvas-matrix",
   "version": "1.0.9",
   "description": "matrix for canvas, mat3, mat4",
-  "main": "dist/main.js",
+  "main": "index.js",
   "files": [
-    "dist/main.js"
+    "index.js",
+    "src/"
   ],
   "scripts": {
-    "test": "mocha",
-    "build":"webpack"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -27,8 +27,6 @@
   "homepage": "https://github.com/isuekey/canvas-matrix#readme",
   "devDependencies": {
     "chai": "^4.2.0",
-    "mocha": "^7.0.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10"
+    "mocha": "^7.0.0"
   }
 }
