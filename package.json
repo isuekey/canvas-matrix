@@ -1,11 +1,10 @@
 {
   "name": "canvas-matrix",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "matrix for canvas, mat3, mat4",
-  "main": "index.js",
+  "main": "dist/main.js",
   "files": [
-    "index.js",
-    "src/"
+    "dist/main.js"
   ],
   "scripts": {
     "test": "mocha",
