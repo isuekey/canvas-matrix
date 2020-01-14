@@ -167,6 +167,9 @@ class Mat4 {
     ];
     return this;
   }
+  thenRotate(angle=0, axis=[0, 0, 1]) {
+    return new Mat4().setRotate(angle, axis).multiplyBy(this);
+  }
   setScale(xs=1, ys=1, zs=1) {
     this.mat = [
       xs, 0, 0, 0,
@@ -176,7 +179,10 @@ class Mat4 {
     ];
     return this;
   }
-  setTranslate(x, y, z) {
+  thenScale(xs, ys, zs) {
+    return new Mat4().setScale(xs, ys, zs).multiplyBy(this);
+  }
+  setTranslate(x=0, y=0, z=0) {
     this.mat = [
       1, 0, 0, x,
       0, 1, 0, y,
@@ -184,6 +190,9 @@ class Mat4 {
       0, 0, 0, 1,
     ];
     return this;
+  }
+  thenTranslate(x, y, z) {
+    return new Mat4().setTranslate(x, y, z).multiplyBy(this);
   }
   multiply(mat4) {
     if(typeof mat4 == 'number') {
