@@ -37,4 +37,3 @@
   * context2d.drawImage(image, - imageHalfWidth, - imageHalfHeight);
   * 这样操作出来的图片会在canvas的正中。
   * 旋转与缩放是基于原点，而平移是在原有位置上的。所以将图片中心与canvas原点重合进行绘制，可以有效的简化操作逻辑。
-
