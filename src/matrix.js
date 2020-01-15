@@ -85,6 +85,14 @@ class Mat3 {
   getElement(row, col) {
     return this.mat[row * 3 + col];
   }
+  transpose() {
+    const a = this.mat;
+    return new Mat3([
+      a[0], a[3], a[6],
+      a[1], a[4], a[7],
+      a[2], a[5], a[8],
+    ]);
+  }
 }
 Mat3.prototype[Symbol.toStringTag]='Matrix3';
 
@@ -232,6 +240,15 @@ class Mat4 {
   }
   getElement(row, col) {
     return this.mat[row * 4 + col];
+  }
+  transpose() {
+    const a = this.mat;
+    return new Mat4([
+      a[0], a[4], a[8], a[12],
+      a[1], a[5], a[9], a[13],
+      a[2], a[6], a[10], a[14],
+      a[3], a[7], a[11], a[15],
+    ]);
   }
 }
 Mat4.prototype[Symbol.toStringTag]='Matrix4';

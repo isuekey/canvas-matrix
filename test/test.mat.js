@@ -108,6 +108,36 @@ describe('Mat3', () => {
       });
     });
   });
+  describe('thenRotate', () => {
+    it('check A.thenRotate == setRotate.multiplyBy(A)', () => {
+      const mat3 = new Array(9).fill(0).map(ele => Math.floor(Math.random() * 100));
+      const A = new Mat3(mat3);
+      const deg = Math.random()*360;
+      const thenRotate = A.thenRotate(deg);
+      const matrix = new Mat3().setRotate(deg).multiplyBy(A);
+      expect(thenRotate.mat).to.deep.equal(matrix.mat);
+    });
+  });
+  describe('thenScale', () => {
+    it('check A.thenScale == setScale.multiplyBy(A)', () => {
+      const mat3 = new Array(9).fill(0).map(ele => Math.floor(Math.random() * 100));
+      const A = new Mat3(mat3);
+      const [xs, ys] = [Math.random()*100, Math.random()*100];
+      const thenScale = A.thenScale(xs, ys);
+      const matrix = new Mat3().setScale(xs, ys).multiplyBy(A);
+      expect(thenScale.mat).to.deep.equal(matrix.mat);
+    });
+  });
+  describe('thenTranslate', () => {
+    it('check A.thenTranslate == setTranslate.multiplyBy(A)', () => {
+      const mat3 = new Array(9).fill(0).map(ele => Math.floor(Math.random() * 100));
+      const A = new Mat3(mat3);
+      const [xm, ym] = [Math.random()*100, Math.random()*100];
+      const thenTranslate = A.thenTranslate(xm, ym);
+      const matrix = new Mat3().setTranslate(xm, ym).multiplyBy(A);
+      expect(thenTranslate.mat).to.deep.equal(matrix.mat);
+    });
+  });
 });
 
 describe('Mat3Dev', () => {
@@ -306,5 +336,36 @@ describe('Mat4', () => {
       });
     });
   });  
+  describe('thenRotate', () => {
+    it('check A.thenRotate == setRotate.multiplyBy(A)', () => {
+      const mat4 = new Array(16).fill(0).map(ele => Math.floor(Math.random() * 100));
+      const A = new Mat4(mat4);
+      const deg = Math.random()*360;
+      const axis = new Array(3).fill(0).map(ele => (Math.random() * 10 + 1));
+      const thenRotate = A.thenRotate(deg, axis);
+      const matrix = new Mat4().setRotate(deg, axis).multiplyBy(A);
+      expect(thenRotate.mat).to.deep.equal(matrix.mat);
+    });
+  });
+  describe('thenScale', () => {
+    it('check A.thenScale == setScale.multiplyBy(A)', () => {
+      const mat4 = new Array(16).fill(0).map(ele => Math.floor(Math.random() * 100));
+      const A = new Mat4(mat4);
+      const [xs, ys, zs] = [Math.random()*100, Math.random()*100, Math.random()*100];
+      const thenScale = A.thenScale(xs, ys, zs);
+      const matrix = new Mat4().setScale(xs, ys, zs).multiplyBy(A);
+      expect(thenScale.mat).to.deep.equal(matrix.mat);
+    });
+  });
+  describe('thenTranslate', () => {
+    it('check A.thenTranslate == setTranslate.multiplyBy(A)', () => {
+      const mat3 = new Array(16).fill(0).map(ele => Math.floor(Math.random() * 100));
+      const A = new Mat4(mat3);
+      const [xm, ym, zm] = [Math.random()*100, Math.random()*100, Math.random() * 100];
+      const thenTranslate = A.thenTranslate(xm, ym, zm);
+      const matrix = new Mat4().setTranslate(xm, ym, zm).multiplyBy(A);
+      expect(thenTranslate.mat).to.deep.equal(matrix.mat);
+    });
+  });
 });
 
